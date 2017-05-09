@@ -37,7 +37,7 @@ typedef struct enemy * Enemy;
 int POTION_POWER = 30;
 
 //define number of enemy types, including the treasure chest
-int TOTAL_ENEMY_TYPES = 5;
+int TOTAL_ENEMY_TYPES = 6;
 
 void playerType(Player p, int type);
 void shop(Player p);
@@ -69,7 +69,7 @@ int main(void) {
     
     printf("Welcome to Nameless Village traveler...");
     
-    //player enters the name for the character  
+    //player enters the name for the character
     printf("What is your name?: ");
     scanf("%s", arr);
     p1.name = arr;
@@ -133,7 +133,6 @@ void playerType(Player p, int type) {
  * Creates the different enemy types.  Enemy types are randomly chosen when a player enters the dungeon.
  * Different enemy styles have different levels of attack power, health, and coins.
  * Final enemy type is set to "Treasure Chest", which has no attack or health, but gives a small amount of coins.
- *
  */
 void enemyType(Enemy e, int x) {
     switch(x) {
@@ -150,18 +149,26 @@ void enemyType(Enemy e, int x) {
             e -> coins = 100;
             break;
         case 3 :
-            e -> type = "Wolf";
-            e -> attackPower *= 0.60;
-            e -> coins = 50;
-        case 4 :
             e -> type = "Witch";
             e -> attackPower *= 1.15;
             e -> health *= 0.90;
+            e -> coins = 100;
+        case 4 :
+            e -> type = "Wolf";
+            e -> attackPower *= 0.60;
+            e -> health *= 0.70;
+            e -> coins = 50;
         case 5 :
+            e -> type = "Kobold";
+            e -> attackPower *= 0.40;
+            e -> health *= 0.40;
+            e -> coins = 20;
+        case 6 :
             e -> type = "Treasure Chest";
             e -> coins = 15;
     }
 }
+
 /**
  * Display's the player character's current stats, including attack power, remaining health,
  * number of potions, and coins.
@@ -280,6 +287,7 @@ void battle(Player p, Enemy e) {
     int leaveBattle = 1;
     printf("You see a %s in the room!\n", e -> type);
     
+    //Checks if the enemy type is a treasure chest instead of an enemy
     if (strcmp(e -> type, "Treasure Chest") == 0) {
         p -> coins += e -> coins;
         printf("You have gained %d coins!\n", e -> coins);
