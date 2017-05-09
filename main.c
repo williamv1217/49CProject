@@ -11,6 +11,7 @@
 #include <time.h>
 #include <stdlib.h>
 
+//a struct with enemy character properties
 struct enemy {
     char *type;
     int attackPower;
@@ -18,6 +19,7 @@ struct enemy {
     int coins;
 };
 
+//a struct with player character properties
 struct player {
     char *name;
     char *type;
@@ -27,9 +29,15 @@ struct player {
     int potions;
 };
 
+//create typedef for
 typedef struct player * Player;
 typedef struct enemy * Enemy;
-int potionPower = 30;
+
+//define global potion power
+int POTION_POWER = 30;
+
+//define number of enemy types, including the treasure chest
+int TOTAL_ENEMY_TYPES = 5;
 
 void playerType(Player p, int type);
 void shop(Player p);
@@ -37,7 +45,7 @@ void showStats(Player p);
 void playerAttack(Player p, Enemy e);
 void enemyAttack(Player p, Enemy e);
 void battle(Player p, Enemy e);
-void roomType(Enemy e, int x);
+void enemyType(Enemy e, int x);
 
 int main(void) {
     struct player p1;
@@ -55,6 +63,7 @@ int main(void) {
     p1.coins = 150;
     p1.potions = 1;
     
+    //creating the enemy base attack power
     e1.attackPower = 20;
 
     
@@ -82,7 +91,7 @@ int main(void) {
         switch (exit) {
             case 1 :
                 e1.health = 100;
-                roomType(e1ptr, rand() % 2 + 1);
+                enemyType(e1ptr, rand() % TOTAL_ENEMY_TYPES + 1);
                 battle(p1ptr, e1ptr);
                 break;
             case 2 :
@@ -93,10 +102,13 @@ int main(void) {
                 break;
         }
     }
-
     return 0;
 }
 
+/**
+ * Creates the type of player character. User can choose which type at beginning of the game.
+ * Different character styles have different levels of attack power and health
+ */
 void playerType(Player p, int type) {
     switch(type) {
         case 1 :
@@ -115,7 +127,13 @@ void playerType(Player p, int type) {
     }
 }
 
-void roomType(Enemy e, int x) {
+/**
+ * Creates the different enemy types.  Enemy types are randomly chosen when a player enters the dungeon.
+ * Different enemy styles have different levels of attack power, health, and coins.
+ * Final enemy type is set to "Treasure Chest", which has no attack or health, but gives a small amount of coins.
+ *
+ */
+void enemyType(Enemy e, int x) {
     switch(x) {
         case 1 :
             e -> type = "Thief";
@@ -129,17 +147,23 @@ void roomType(Enemy e, int x) {
             e -> health *= 0.80;
             e -> coins = 100;
             break;
-//        case 3 :
-//            e -> type = "Dragon";
-//            e -> attackPower *= 1.20;
-//            e -> coins = 250;
-//        case 4 :
-//            e -> type = "Treasure Chest";
-//            e -> coins = 50;
-
+        case 3 :
+            e -> type = "Wolf";
+            e -> attackPower *= 0.60;
+            e -> coins = 50;
+        case 4 :
+            e -> type = "Witch";
+            e -> attackPower *= 1.15;
+            e -> health *= 0.90;
+        case 5 :
+            e -> type = "Treasure Chest";
+            e -> coins = 15;
     }
 }
-
+/**
+ * Display's the player character's current stats, including attack power, remaining health,
+ * number of potions, and coins.
+ */
 void showStats(Player p) {
     printf("\nAttack Power: %d\n", p -> attackPower);
     printf("Health: %d\n", p -> health);
@@ -147,6 +171,12 @@ void showStats(Player p) {
     printf("Coins: %d\n\n", p -> coins);
 }
 
+/**
+ * Creates a shop in which the player can purchase weapons, armor, and healing potions.
+ * Weapons will increase the player's attack power
+ * Armor will increase the player's overall health
+ * Healing potions give a one time increase to player health
+ */
 void shop(Player p) {
     int leaveShop = 1;
     puts("\nWelcome to the shop!");
@@ -194,6 +224,12 @@ void shop(Player p) {
     printf("Thank you %s!\n\n", p -> name);
 }
 
+/**
+ * Player character attacks the enemy character.
+ * Determines if the player attacks or not based on a random number.
+ * Random range is 0 - 100, player attacks if random <= 65
+ * If random >= 65, player's attack will miss.
+ */
 void playerAttack(Player p, Enemy e) {
     int r = 1 + rand() % 100;
     if (r <= 65) {
@@ -210,6 +246,12 @@ void playerAttack(Player p, Enemy e) {
     }
 }
 
+/**
+ * Enemy attacks the player character.
+ * Determines if the enemy attacks or not based on a random number.
+ * Random range is 0 - 100, enemy attacks if random <= 65
+ * If random >= 65, enemy's attack will miss.
+ */
 void enemyAttack(Player p, Enemy e) {
     int r = 1 + rand() % 100;
     if (r <= 65) {
@@ -225,6 +267,13 @@ void enemyAttack(Player p, Enemy e) {
     }
 }
 
+/**
+ * Creates a battle between the player and the enemy, with three options for the player.
+ * Tactical retreat will have the player leave the battle.
+ * Attack will call the playerAttack function, and try to attack the enemy. The enemy will auto-attack after this is called
+ * Heal will heal the player character with a potion if the player has any potions. The enemy will auto-attack after this is called.
+ * See my stats will display the player's current stats
+ */
 void battle(Player p, Enemy e) {
     int leaveBattle = 1;
     printf("You see a %s in the room!\n", e -> type);
@@ -232,6 +281,7 @@ void battle(Player p, Enemy e) {
     if (strcmp(e -> type, "Treasure Chest") == 0) {
         p -> coins += e -> coins;
         printf("You have gained %d coins!\n", e -> coins);
+        leaveBattle = 0;
         
     } else {
         while(leaveBattle > 0){
@@ -267,8 +317,8 @@ void battle(Player p, Enemy e) {
                     puts("--------------------------------------------------------");
                     if (p -> potions > 0) {
                         p -> potions--;
-                        p -> health += potionPower;
-                        printf("You increased your health by %d points, you have %d potions left\n", potionPower, p -> potions);
+                        p -> health += POTION_POWER;
+                        printf("You increased your health by %d points, you have %d potions left\n", POTION_POWER, p -> potions);
                         enemyAttack(p, e);
                     } else {
                         printf("You have no potions left!\n");
@@ -279,7 +329,6 @@ void battle(Player p, Enemy e) {
                     showStats(p);
                     break;
             }
-            
         }
     }
 }
