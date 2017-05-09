@@ -153,19 +153,23 @@ void enemyType(Enemy e, int x) {
             e -> attackPower *= 1.15;
             e -> health *= 0.90;
             e -> coins = 100;
+            break;
         case 4 :
             e -> type = "Wolf";
             e -> attackPower *= 0.60;
             e -> health *= 0.70;
             e -> coins = 50;
+            break;
         case 5 :
             e -> type = "Kobold";
             e -> attackPower *= 0.40;
             e -> health *= 0.40;
             e -> coins = 20;
+            break;
         case 6 :
             e -> type = "Treasure Chest";
             e -> coins = 15;
+            break;
     }
 }
 
@@ -285,7 +289,7 @@ void enemyAttack(Player p, Enemy e) {
  */
 void battle(Player p, Enemy e) {
     int leaveBattle = 1;
-    printf("You see a %s in the room!\n", e -> type);
+    printf("\nYou see a %s in the room!\n", e -> type);
     
     //Checks if the enemy type is a treasure chest instead of an enemy
     if (strcmp(e -> type, "Treasure Chest") == 0) {
