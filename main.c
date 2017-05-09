@@ -69,6 +69,7 @@ int main(void) {
     
     printf("Welcome to Nameless Village traveler...");
     
+    //player enters the name for the character
     printf("What is your name?: ");
     scanf("%s", arr);
     p1.name = arr;
@@ -77,6 +78,7 @@ int main(void) {
     puts("What kind of character are you?\n");
     puts("1. Wizard \t(higher attack, lower defense)\n2. Fighter \t(same attack and defense)\n3. Knight \t(lower attack, higher defense)");
     
+    //Player can choose the type of character they want to be
     scanf("%d", &chartype);
     playerType(p1ptr, chartype);
     
