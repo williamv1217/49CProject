@@ -69,7 +69,7 @@ int main(void) {
     
     printf("Welcome to Nameless Village traveler...");
     
-    //player enters the name for the character
+    //player enters the name for the character  
     printf("What is your name?: ");
     scanf("%s", arr);
     p1.name = arr;
