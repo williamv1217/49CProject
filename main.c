@@ -29,7 +29,7 @@ struct player {
     int potions;
 };
 
-//create typedef for
+//create typedefs for player/enemy pointers
 typedef struct player * Player;
 typedef struct enemy * Enemy;
 
@@ -54,7 +54,7 @@ int main(void) {
     Enemy e1ptr = &e1;
     char arr[80];
     srand((unsigned int) time(NULL));
-    int chartype;// = 0;
+    int chartype;
     int exit =  1;
 
     //creating the initial values for the player
@@ -85,7 +85,7 @@ int main(void) {
     }
     playerType(p1ptr, chartype);
     
-    printf("\nHello there %s! \n", p1.type);
+    printf("\nHello there %s!\n", p1.type);
     while (exit > 0){
         puts("What will you like to do? (enter a number)\n");
         puts("0. Go to sleep, Goodbye!");
@@ -116,7 +116,7 @@ int main(void) {
 }
 
 /**
- * Creates the type of player character. User can choose which type at beginning of the game.
+ * Creates the type of player character. User can choose which type at beginning of the game
  * Different character styles have different levels of attack power and health
  */
 void playerType(Player p, int type) {
@@ -140,9 +140,9 @@ void playerType(Player p, int type) {
 }
 
 /**
- * Creates the different enemy types.  Enemy types are randomly chosen when a player enters the dungeon.
- * Different enemy styles have different levels of attack power, health, and coins.
- * Final enemy type is set to "Treasure Chest", which has no attack or health, but gives a small amount of coins.
+ * Creates the different enemy types.  Enemy types are randomly chosen when a player enters the dungeon
+ * Different enemy styles have different levels of attack power, health, and coins
+ * Final enemy type is set to "Treasure Chest", which has no attack or health, but gives a small amount of coins
  */
 void enemyType(Enemy e, int x) {
     switch(x) {
@@ -197,7 +197,7 @@ void showStats(Player p) {
 }
 
 /**
- * Creates a shop in which the player can purchase weapons, armor, and healing potions.
+ * Creates a shop in which the player can purchase weapons, armor, and healing potions
  * Weapons will increase the player's attack power
  * Armor will increase the player's overall health
  * Healing potions give a one time increase to player health
@@ -208,9 +208,9 @@ void shop(Player p) {
     puts("What can I get for you today?\n");
     while(leaveShop > 0){
         puts("0. Nevermind, I'm leaving");
-        puts("1. Weapon       (100 coins)");
-        puts("2. Armor        (100 coins)");
-        puts("3. Heal Potion  (40 coins)");
+        puts("1. Weapon       (100 coins - increase attack by 15%)");
+        puts("2. Armor        (100 coins - increase health by 15%)");
+        printf("3. Heal Potion  ( 40 coins - increase health by %d pts)\n", POTION_POWER);
         while(scanf("%d", &leaveShop) != 1) {
             printf("Please enter an integer: ");
             while(getchar() != '\n');
@@ -218,8 +218,8 @@ void shop(Player p) {
         switch(leaveShop) {
             case 1 :
                 if (p -> coins >= 100) {
-                    p -> attackPower *= 1.15; //increase attack by 15%
-                    p -> coins -= 100; //reduce coins by 100
+                    p -> attackPower *= 1.15;
+                    p -> coins -= 100;
                     printf("\nYou have %d coins left\n", p -> coins);
                 } else {
                     puts("\nSorry, you don't have enough coins to purchase a new weapon");
@@ -227,8 +227,8 @@ void shop(Player p) {
                 break;
             case 2 :
                 if (p -> coins >= 100) {
-                    p -> health *= 1.15; //increase defense by 15%
-                    p -> coins -= 100; //reduce coins by 100
+                    p -> health *= 1.15;
+                    p -> coins -= 100;
                     printf("\nYou have %d coins left\n", p -> coins);
                 } else {
                     puts("\nSorry, you don't have enough coins to purchase new armor");
@@ -236,8 +236,8 @@ void shop(Player p) {
                 break;
             case 3 :
                 if (p -> coins >= 40) {
-                    p -> potions++; //increase number of potions by one
-                    p -> coins -= 40; //reduce coins by 40
+                    p -> potions++;
+                    p -> coins -= 40;
                     printf("\nYou have %d coins left\n", p -> coins);
                 } else {
                     puts("\nSorry, you don't have enough coins to purchase a healing potion");
@@ -308,7 +308,7 @@ void battle(Player p, Enemy e) {
     printf("\nYou see a %s in the room!\n", e -> type);
     
     //Checks if the enemy type is a treasure chest instead of an enemy
-    //If player gets a treasure they automatically leave the dungeon room 
+    //If player gets a treasure they automatically leave the dungeon room
     if (strcmp(e -> type, "Treasure Chest") == 0) {
         p -> coins += e -> coins;
         printf("You have gained %d coins!\n", e -> coins);
