@@ -10,7 +10,6 @@
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
-#include <ctype.h>
 
 //a struct with enemy character properties
 struct enemy {
@@ -55,7 +54,7 @@ int main(void) {
     Enemy e1ptr = &e1;
     char arr[80];
     srand((unsigned int) time(NULL));
-    int chartype = 0;
+    int chartype;// = 0;
     int exit =  1;
 
     //creating the initial values for the player
@@ -75,11 +74,15 @@ int main(void) {
     p1.name = arr;
     printf("\nHello, %s\n", p1.name);
     
+    //Player can choose the type of character they want to be
     puts("What kind of character are you?\n");
     puts("1. Wizard \t(higher attack, lower defense)\n2. Fighter \t(same attack and defense)\n3. Knight \t(lower attack, higher defense)");
     
-    //Player can choose the type of character they want to be
-    scanf("%d", &chartype);
+    //Will only accept an integer
+    while(scanf("%d", &chartype) != 1) {
+        printf("Please enter an integer: ");
+        while(getchar() != '\n');
+    }
     playerType(p1ptr, chartype);
     
     printf("\nHello there %s! \n", p1.type);
@@ -89,7 +92,10 @@ int main(void) {
         puts("1. Enter the dungeon");
         puts("2. Go shopping");
         puts("3. See my stats");
-        scanf("%d", &exit);
+        while(scanf("%d", &exit) != 1) {
+            printf("Please enter an integer: ");
+            while(getchar() != '\n');
+        }
         switch (exit) {
             case 1 :
                 e1.health = 100;
@@ -205,8 +211,10 @@ void shop(Player p) {
         puts("1. Weapon       (100 coins)");
         puts("2. Armor        (100 coins)");
         puts("3. Heal Potion  (40 coins)");
-        scanf("%d", &leaveShop);
-        
+        while(scanf("%d", &leaveShop) != 1) {
+            printf("Please enter an integer: ");
+            while(getchar() != '\n');
+        }
         switch(leaveShop) {
             case 1 :
                 if (p -> coins >= 100) {
@@ -312,8 +320,10 @@ void battle(Player p, Enemy e) {
             puts("1. Attack with weapon");
             puts("2. Heal");
             puts("3. See my stats");
-            scanf("%d", &leaveBattle);
-            
+            while(scanf("%d", &leaveBattle) != 1) {
+                printf("Please enter an integer: ");
+                while(getchar() != '\n');
+            }
             switch(leaveBattle) {
                 case 0 :
                     break;
