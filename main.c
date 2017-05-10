@@ -166,14 +166,14 @@ void enemyType(Enemy e, int x) {
             break;
         case 4 :
             e -> type = "Wolf";
-            e -> attackPower *= 0.60;
+            e -> attackPower *= 0.75;
             e -> health *= 0.70;
             e -> coins = 50;
             break;
         case 5 :
             e -> type = "Kobold";
-            e -> attackPower *= 0.40;
-            e -> health *= 0.40;
+            e -> attackPower *= 0.70;
+            e -> health *= 0.60;
             e -> coins = 20;
             break;
         case 6 :
@@ -308,6 +308,7 @@ void battle(Player p, Enemy e) {
     printf("\nYou see a %s in the room!\n", e -> type);
     
     //Checks if the enemy type is a treasure chest instead of an enemy
+    //If player gets a treasure they automatically leave the dungeon room 
     if (strcmp(e -> type, "Treasure Chest") == 0) {
         p -> coins += e -> coins;
         printf("You have gained %d coins!\n", e -> coins);
