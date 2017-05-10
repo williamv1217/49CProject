@@ -10,6 +10,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 //a struct with enemy character properties
 struct enemy {
@@ -56,7 +57,7 @@ int main(void) {
     srand((unsigned int) time(NULL));
     int chartype = 0;
     int exit =  1;
-    
+
     //creating the initial values for the player
     p1.attackPower = 20;
     p1.health = 100;
@@ -66,7 +67,6 @@ int main(void) {
     //creating the enemy base attack power
     e1.attackPower = 20;
 
-    
     printf("Welcome to Nameless Village traveler...");
     
     //player enters the name for the character
@@ -102,6 +102,8 @@ int main(void) {
             case 3 :
                 showStats(p1ptr);
                 break;
+            default :
+                break;
         }
     }
     return 0;
@@ -125,6 +127,8 @@ void playerType(Player p, int type) {
             p -> type = "Knight";
             p -> attackPower *= 0.80;
             p -> health *= 1.20;
+            break;
+        default :
             break;
     }
 }
@@ -169,6 +173,8 @@ void enemyType(Enemy e, int x) {
         case 6 :
             e -> type = "Treasure Chest";
             e -> coins = 15;
+            break;
+        default :
             break;
     }
 }
@@ -228,6 +234,8 @@ void shop(Player p) {
                 } else {
                     puts("\nSorry, you don't have enough coins to purchase a healing potion");
                 }
+                break;
+            default :
                 break;
         }
         if (leaveShop != 0) {
@@ -341,6 +349,8 @@ void battle(Player p, Enemy e) {
                     break;
                 case 3 :
                     showStats(p);
+                    break;
+                default :
                     break;
             }
         }
